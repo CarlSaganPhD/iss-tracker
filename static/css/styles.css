@@ -129,3 +129,11 @@ body {
     height: 50vh; /* Adjust based on your design needs; this will make the map take up half the viewport height */
   }
 }
+
+@media (max-width: 768px) {
+  /* Media query for screens up to 768px width (typical mobile devices) */
+  .video {
+    width: 100%; /* Adjust the width for smaller screens */
+    height: auto; /* Maintain aspect ratio */
+  }
+}
