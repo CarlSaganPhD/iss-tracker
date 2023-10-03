@@ -1,6 +1,7 @@
 from flask import Flask, jsonify, render_template
 import requests
 import os
+import uvicorn
 
 app = Flask(__name__)
 
@@ -24,5 +25,5 @@ def iss_location():
 port = int(os.environ.get("PORT", 5000))
 
 if __name__ == "__main__":
-    # Bind to all available network interfaces
-    app.run(host="0.0.0.0")
+    # Use Uvicorn to run the ASGI application
+    uvicorn.run(app, host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
