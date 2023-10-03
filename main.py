@@ -1,8 +1,6 @@
 from flask import Flask, jsonify, render_template
 import requests
 import os
-import uvicorn
-import asgiref.wsgi
 
 app = Flask(__name__)
 
@@ -23,10 +21,9 @@ def iss_location():
     app.logger.info(f"Fetching ISS location: Latitude {response.json().get('latitude')} Longitude {response.json().get('longitude')}")
     return jsonify(response.json())
 
-asgi_app = asgiref.wsgi.WSGIAdapter(app)
-
+# Use the PORT environment variable or default to 5000
 port = int(os.environ.get("PORT", 5000))
 
 if __name__ == "__main__":
-    # Use Uvicorn to run the ASGI application
-    uvicorn.run(app, host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
+    # Run the Flask app using the built-in development server
+    app.run(host="0.0.0.0", port=port)
