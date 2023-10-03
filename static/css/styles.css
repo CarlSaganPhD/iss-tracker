@@ -1,78 +1,78 @@
 @font-face {
-    font-family: 'Space Age';
-    src: url('/static/spaceage.ttf') format('truetype');
+  font-family: "Courier Prime";
+  src: url("/static/Courier_Prime/CourierPrime-Regular.ttf") format("truetype");
 }
-        body {
-            /* Set the background image */
-            /*background-image: url('https://images.unsplash.com/photo-1444080748397-f442aa95c3e5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1932&q=80');*/
+body {
+  /* Set the background image */
+  /*background-image: url('https://images.unsplash.com/photo-1444080748397-f442aa95c3e5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1932&q=80');*/
 
-            background-color: #0e2647;
-            
-            /* Cover the entire viewport */
-            background-size: cover;
-    
-            /* Make sure the background image doesn't repeat */
-            background-repeat: no-repeat;
-    
-            /* Optional: Set the background position, if needed */
-            background-position: center center;
-    
-            /* Optional: Fix the background to the viewport so it doesn't scroll with the content */
-            background-attachment: fixed;
+  background-color: #0e2647;
 
+  /* Cover the entire viewport */
+  background-size: cover;
 
-            margin: 0;
-            padding: 0;
-            height: 100%;
-            font-family: 'Space Age', sans-serif; 
-        }
+  /* Make sure the background image doesn't repeat */
+  background-repeat: no-repeat;
 
-        .flex-container {
-    display: flex;
-    height: 100%; /* 100% of the body */
-    padding: 2%;
-    height: 96vh;
-    box-sizing: border-box; /* Ensure that padding doesn't add to the total height */
-    align-items: stretch;
+  /* Optional: Set the background position, if needed */
+  background-position: center center;
+
+  /* Optional: Fix the background to the viewport so it doesn't scroll with the content */
+  background-attachment: fixed;
+
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: "Courier Prime", sans-serif;
 }
 
-    .info-container, #issMap {
-    box-sizing: border-box; /* Include padding in the total width */
-    flex: 1; 
-    padding: 1%; 
-    height: 100% /* Subtract double the padding to equalize heights */
+.flex-container {
+  display: flex;
+  height: 100%; /* 100% of the body */
+  padding: 2%;
+  height: 96vh;
+  box-sizing: border-box; /* Ensure that padding doesn't add to the total height */
+  align-items: stretch;
 }
 
-    .info-container {
-    background-color: rgba(255, 255, 255, 0.7);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    overflow: auto;
+.info-container,
+#issMap {
+  box-sizing: border-box; /* Include padding in the total width */
+  flex: 1;
+  padding: 1%;
+  height: 100%; /* Subtract double the padding to equalize heights */
 }
 
-    #issMap {
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);   /* Optional: light shadow for a "lifted" look */
-    }
+.info-container {
+  background-color: rgba(255, 255, 255, 0.7);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow: auto;
+}
 
-    .timer-box {
-    border: 2px solid #333;
-    width: 95%; /* or whatever width you prefer */
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+#issMap {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: light shadow for a "lifted" look */
+}
+
+.timer-box {
+  border: 2px solid #333;
+  width: 95%; /* or whatever width you prefer */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .title-bar {
-    background-color: #333;
-    color: #fff;
-    padding: 5px 10px;
-    font-weight: bold;
+  background-color: #333;
+  color: #fff;
+  padding: 5px 10px;
+  font-weight: bold;
 }
 
 .timer-content {
-    padding: 10px;
-    text-align: center;
-    font-size: 1.2em;
-    font-weight: bold;
+  padding: 10px;
+  text-align: center;
+  font-size: 1.2em;
+  font-weight: bold;
 }
 
 .timer-box + .timer-box {
-    margin-top: 20px;  /* Adjust as per your requirement */
+  margin-top: 20px; /* Adjust as per your requirement */
 }
