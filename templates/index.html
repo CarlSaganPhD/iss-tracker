@@ -9,7 +9,9 @@
       rel="stylesheet"
       href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
     />
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
     <link rel="stylesheet" href="static/css/styles.css" />
+    <script src="https://unpkg.com/@joergdietrich/leaflet.terminator@1.0.0/L.Terminator.js"></script>
   </head>
   <body>
     <div class="flex-container">
@@ -36,8 +38,6 @@
 
       <div id="issMap" class="map-container"></div>
     </div>
-
-    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
     <script>
       var southWest = L.latLng(-90, -180),
         northEast = L.latLng(90, 180),
@@ -53,6 +53,18 @@
       L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png").addTo(
         map
       );
+
+      console.log(
+        "Is L.terminator a function?",
+        typeof L.terminator === "function"
+      );
+
+      var t = L.terminator();
+      t.addTo(map);
+
+      setInterval(function () {
+        t.setTime();
+      }, 60000);
 
       var issMarker; // Global reference to the ISS marker
       var issIcon = L.icon({
