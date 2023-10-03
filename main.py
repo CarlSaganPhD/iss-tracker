@@ -2,6 +2,7 @@ from flask import Flask, jsonify, render_template
 import requests
 import os
 import uvicorn
+import asgiref.wsgi
 
 app = Flask(__name__)
 
@@ -21,6 +22,8 @@ def iss_location():
     response = requests.get('https://api.wheretheiss.at/v1/satellites/25544')
     app.logger.info(f"Fetching ISS location: Latitude {response.json().get('latitude')} Longitude {response.json().get('longitude')}")
     return jsonify(response.json())
+
+asgi_app = asgiref.wsgi.WSGIAdapter(app)
 
 port = int(os.environ.get("PORT", 5000))
 
