@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ISS Tracker</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+    />
+    <link rel="stylesheet" href="static/css/styles.css" />
+  </head>
+  <body>
+    <div class="flex-container">
+      <div class="info-container">
+        <!-- Here, you'll add the ISS speed, location, etc. -->
+        <h1>ISS Tracker</h1>
+
+        <!-- Timer Box -->
+        <div class="timer-box">
+          <div class="title-bar">Tracking Time</div>
+          <div class="timer-content">
+            <span id="timer">00:00:00</span>
+          </div>
+        </div>
+
+        <!-- New Blank Box -->
+        <div class="timer-box" id="categoryBox">
+          <div class="title-bar">It is somewhere over...</div>
+          <div class="timer-content">
+            <span id="locationCategory">Loading...</span>
+          </div>
+        </div>
+      </div>
+
+      <div id="issMap"></div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script>
+      var southWest = L.latLng(-90, -180),
+        northEast = L.latLng(90, 180),
+        bounds = L.latLngBounds(southWest, northEast);
+
+      var map = L.map("issMap", {
+        maxBounds: bounds,
+        maxBoundsViscosity: 1.0,
+        worldCopyJump: true,
+        minZoom: 2,
+        maxZoom: 10,
+      }).setView([0, 0], 2); // Initialize map at center of world
+      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png").addTo(
+        map
+      );
+
+      var issMarker; // Global reference to the ISS marker
+      var issIcon = L.icon({
+        iconUrl:
+          "https://icons.iconarchive.com/icons/goodstuff-no-nonsense/free-space/512/international-space-station-icon.png",
+        iconSize: [50, 30],
+      });
+
+      var issPositions = JSON.parse(localStorage.getItem("issPositions")) || []; // Load the positions from local storage
+
+      function savePositionsToLocalStorage() {
+        localStorage.setItem("issPositions", JSON.stringify(issPositions));
+      }
+
+      issPositions.forEach(function (position) {
+        L.circle([position.lat, position.lon], {
+          color: "blue",
+          fillColor: "#30f",
+          fillOpacity: 0.5,
+          radius: 500, // You can adjust the radius for visibility
+        }).addTo(map);
+      });
+
+      var categories = [
+        {
+          name: "The Arctic Ocean",
+          latRange: [66, 90],
+          lonRange: [-180, 180],
+        },
+        {
+          name: "Northern Europe",
+          latRange: [50, 70],
+          lonRange: [-10, 40],
+        },
+        {
+          name: "Central Europe",
+          latRange: [40, 50],
+          lonRange: [-10, 40],
+        },
+        {
+          name: "Southern Europe",
+          latRange: [30, 40],
+          lonRange: [-10, 40],
+        },
+        {
+          name: "Northern Africa",
+          latRange: [20, 30],
+          lonRange: [-20, 40],
+        },
+        { name: "Central Africa", latRange: [0, 20], lonRange: [-20, 40] },
+        {
+          name: "Southern Africa",
+          latRange: [-35, 0],
+          lonRange: [10, 50],
+        },
+        {
+          name: "The Indian Ocean",
+          latRange: [-40, 20],
+          lonRange: [40, 110],
+        },
+        { name: "Central Asia", latRange: [30, 50], lonRange: [40, 85] },
+        {
+          name: "Southeast Asia",
+          latRange: [-10, 30],
+          lonRange: [85, 145],
+        },
+        {
+          name: "The Pacific Ocean",
+          latRange: [-60, 60],
+          lonRange: [145, -120],
+        },
+        {
+          name: "The Atlantic Ocean",
+          latRange: [-60, 60],
+          lonRange: [-80, 0],
+        },
+        {
+          name: "North America",
+          latRange: [30, 70],
+          lonRange: [-140, -60],
+        },
+        {
+          name: "Central America",
+          latRange: [10, 30],
+          lonRange: [-100, -60],
+        },
+        {
+          name: "South America",
+          latRange: [-60, 10],
+          lonRange: [-80, -35],
+        },
+        { name: "Australia", latRange: [-45, -10], lonRange: [110, 155] },
+        {
+          name: "The Middle East",
+          latRange: [20, 40],
+          lonRange: [40, 60],
+        },
+        {
+          name: "The Antarctic",
+          latRange: [-90, -60],
+          lonRange: [-180, 180],
+        },
+        {
+          name: "Northeastern China",
+          latRange: [30, 50],
+          lonRange: [85, 130],
+        },
+        {
+          name: "Eastern Pacific Ocean",
+          latRange: [-60, 60],
+          lonRange: [-180, -120],
+        },
+        // ... add more as needed
+      ];
+
+      function getCurrentCategory(lat, lon) {
+        for (var i = 0; i < categories.length; i++) {
+          var category = categories[i];
+          if (
+            lat >= category.latRange[0] &&
+            lat <= category.latRange[1] &&
+            lon >= category.lonRange[0] &&
+            lon <= category.lonRange[1]
+          ) {
+            return category.name;
+          }
+        }
+        return "Unknown"; // Default if no category matches
+      }
+
+      function updateISSPosition() {
+        $.get("/iss_location", function (data) {
+          var lat = data.latitude;
+          var lon = data.longitude;
+
+          console.log("Updated ISS Location:", lat, lon);
+
+          // If the marker doesn't exist, create it. Otherwise, just update its position.
+          if (!issMarker) {
+            issMarker = L.marker([lat, lon], { icon: issIcon }).addTo(map);
+          } else {
+            // Leave a small circle at the old position
+            L.circle([issMarker.getLatLng().lat, issMarker.getLatLng().lng], {
+              color: "blue",
+              fillColor: "#30f",
+              fillOpacity: 0.5,
+              radius: 500, // You can adjust the radius for visibility
+            }).addTo(map);
+
+            // Update the marker's position to the new location
+            issMarker.setLatLng([lat, lon]);
+          }
+
+          issPositions.push({ lat: lat, lon: lon });
+          savePositionsToLocalStorage();
+
+          // Refresh every 1 seconds
+          setTimeout(updateISSPosition, 1000);
+
+          var category = getCurrentCategory(data.latitude, data.longitude);
+          document.getElementById("locationCategory").innerText = category;
+        });
+      }
+
+      updateISSPosition();
+    </script>
+    <script>
+      var elapsedTotalTime =
+        parseInt(localStorage.getItem("elapsedTotalTime")) || 0;
+      var trackingStartTime = Date.now() - elapsedTotalTime;
+
+      function updateTimer() {
+        var now = Date.now();
+        var elapsedTimeInSeconds = Math.floor((now - trackingStartTime) / 1000);
+
+        var hours = Math.floor(elapsedTimeInSeconds / 3600);
+        elapsedTimeInSeconds -= hours * 3600;
+
+        var minutes = Math.floor(elapsedTimeInSeconds / 60);
+        elapsedTimeInSeconds -= minutes * 60;
+
+        var seconds = elapsedTimeInSeconds;
+
+        // Convert single digits to two digits format only if the values are not zero
+        hours = hours > 0 ? (hours < 10 ? "0" + hours : hours) : "";
+        minutes =
+          minutes > 0 || hours > 0
+            ? minutes < 10 && hours > 0
+              ? "0" + minutes
+              : minutes
+            : "";
+        seconds =
+          seconds < 10 && (minutes > 0 || hours > 0) ? "0" + seconds : seconds;
+
+        var timeStr =
+          hours +
+          (hours ? ":" : "") +
+          minutes +
+          (minutes || hours ? ":" : "") +
+          seconds;
+
+        document.getElementById("timer").textContent = timeStr;
+
+        localStorage.setItem(
+          "elapsedTotalTime",
+          (now - trackingStartTime).toString()
+        );
+      }
+
+      // Update the timer every second
+      setInterval(updateTimer, 1000);
+
+      window.addEventListener("beforeunload", function () {
+        var now = Date.now();
+        localStorage.setItem(
+          "elapsedTotalTime",
+          (now - trackingStartTime).toString()
+        );
+      });
+    </script>
+  </body>
+</html>
