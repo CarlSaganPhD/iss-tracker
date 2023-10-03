@@ -19,19 +19,27 @@
         <!-- Here, you'll add the ISS speed, location, etc. -->
         <h1>ISS Tracker</h1>
 
-        <!-- Timer Box -->
-        <div class="timer-box">
-          <div class="title-bar">Tracking Time</div>
-          <div class="timer-content">
-            <span id="timer">00:00:00</span>
-          </div>
-        </div>
-
         <!-- New Blank Box -->
         <div class="timer-box" id="categoryBox">
           <div class="title-bar">It is somewhere over...</div>
           <div class="timer-content">
             <span id="locationCategory">Loading...</span>
+          </div>
+        </div>
+
+        <!-- New Box 1 -->
+        <div class="timer-box">
+          <div class="title-bar">Velocity</div>
+          <div class="timer-content">
+            <span id="issVelocity">Loading...</span> km/h
+          </div>
+        </div>
+
+        <!-- New Box 2 -->
+        <div class="timer-box">
+          <div class="title-bar">Altitude</div>
+          <div class="timer-content">
+            <span id="issAltitude">Loading...</span> km
           </div>
         </div>
       </div>
@@ -206,9 +214,17 @@
         $.get("/iss_location", function (data) {
           var lat = data.latitude;
           var lon = data.longitude;
+          var velocity = data.velocity; // Speed of the ISS in kilometers per hour
+          var altitude = data.altitude; // Altitude of the ISS in kilometers
 
           console.log("Updated ISS Location:", lat, lon);
+          console.log("Speed:", velocity, "km/h");
+          console.log("Altitude:", altitude, "km");
 
+          document.getElementById("issVelocity").innerText =
+            velocity.toFixed(2); // Display velocity with 2 decimal places
+          document.getElementById("issAltitude").innerText =
+            altitude.toFixed(2); // Display altitude with 2 decimal places
           // If the marker doesn't exist, create it. Otherwise, just update its position.
           if (!issMarker) {
             issMarker = L.marker([lat, lon], { icon: issIcon }).addTo(map);
@@ -243,50 +259,6 @@
       }
 
       updateISSPosition();
-    </script>
-    <script>
-      var elapsedTotalTime =
-        parseInt(localStorage.getItem("elapsedTotalTime")) || 0;
-      var trackingStartTime = Date.now() - elapsedTotalTime;
-
-      function updateTimer() {
-        var now = Date.now();
-        var elapsedTimeInSeconds = Math.floor((now - trackingStartTime) / 1000);
-
-        var hours = Math.floor(elapsedTimeInSeconds / 3600);
-        elapsedTimeInSeconds -= hours * 3600;
-
-        var minutes = Math.floor(elapsedTimeInSeconds / 60);
-        elapsedTimeInSeconds -= minutes * 60;
-
-        var seconds = elapsedTimeInSeconds;
-
-        // Always display "0:00" initially
-        var timeStr = "0:00";
-
-        // If there are seconds, update the time string
-        if (seconds > 0) {
-          timeStr = "0:" + (seconds < 10 ? "0" + seconds : seconds);
-        }
-
-        document.getElementById("timer").textContent = timeStr;
-
-        localStorage.setItem(
-          "elapsedTotalTime",
-          (now - trackingStartTime).toString()
-        );
-      }
-
-      // Update the timer every second
-      setInterval(updateTimer, 1000);
-
-      window.addEventListener("beforeunload", function () {
-        var now = Date.now();
-        localStorage.setItem(
-          "elapsedTotalTime",
-          (now - trackingStartTime).toString()
-        );
-      });
     </script>
   </body>
 </html>

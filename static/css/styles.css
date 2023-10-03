@@ -2,6 +2,13 @@
   font-family: "Courier Prime";
   src: url("/static/Courier_Prime/CourierPrime-Regular.ttf") format("truetype");
 }
+
+#g {
+  width: 400px;
+  height: 320px;
+  display: inline-block;
+  margin: 1em;
+}
 body {
   /* Set the background image */
   /*background-image: url('https://images.unsplash.com/photo-1444080748397-f442aa95c3e5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1932&q=80');*/
@@ -24,6 +31,13 @@ body {
   padding: 0;
   height: 100%;
   font-family: "Courier Prime", sans-serif;
+}
+
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  align-items: stretch;
 }
 
 .flex-container {
@@ -52,6 +66,15 @@ body {
   align-items: center;
 }
 
+.half-box {
+  box-sizing: border-box;
+  margin-right: 10px;
+  height: 150px;
+}
+
+.info-row .half-box:last-child {
+  margin-right: 0;
+}
 #issMap {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: light shadow for a "lifted" look */
 }
@@ -70,10 +93,20 @@ body {
 }
 
 .timer-content {
+  display: flex;
+  align-items: center; /* vertically aligns items to the center */
+  justify-content: center; /* horizontally aligns items to the center */
+
   padding: 10px;
   text-align: center;
   font-size: 1.2em;
   font-weight: bold;
+  min-height: 50px;
+  max-height: 50px;
+}
+
+.info-row .timer-content {
+  height: 50px;
 }
 
 .timer-box + .timer-box {
