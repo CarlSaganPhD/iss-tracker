@@ -251,7 +251,7 @@
           savePositionsToLocalStorage();
 
           // Refresh every 1 seconds
-          setTimeout(updateISSPosition, 1000);
+          setTimeout(updateISSPosition, 500);
 
           var category = getCurrentCategory(data.latitude, data.longitude);
           document.getElementById("locationCategory").innerText = category;
