@@ -1,6 +1,7 @@
 # Real-Time ISS Tracker (WiP)
 
-![image](https://github.com/CarlSaganPhD/iss-tracker/assets/81494065/67ce4f51-9b56-4adf-917c-9d4f940e99c9)
+![image](https://github.com/CarlSaganPhD/iss-tracker/assets/81494065/ee513762-12dc-4c6d-beba-554bf30d25ed)
+
 
 This project offers a real-time tracker for the International Space Station (ISS) on a dynamic Leaflet map. The tracker updates the ISS location periodically, allowing users to follow its journey as it orbits the Earth.
 
