@@ -76,3 +76,20 @@ body {
 .timer-box + .timer-box {
   margin-top: 20px; /* Adjust as per your requirement */
 }
+
+/* Media query for screens up to 768px wide (typical breakpoint for tablets and mobiles) */
+@media (max-width: 768px) {
+  .flex-container {
+    flex-direction: column; /* Stack children vertically */
+  }
+
+  .info-container {
+    /* adjust if needed */
+    order: 2; /* Display this second, below the map */
+  }
+
+  .map-container {
+    order: 1; /* Display this first, above the info */
+    height: 50vh; /* Adjust based on your design needs; this will make the map take up half the viewport height */
+  }
+}
