@@ -13,7 +13,7 @@ This project offers a real-time tracker for the International Space Station (ISS
 
 - **Location Categorization:** Discover where the ISS is currently positioned by category (e.g., over oceans, continents, specific regions).
 
-- **Timer**: Track how long you've been following the ISS during your session.
+- **Telemetry**: Track how fast and what altitude the ISS is currently at.
 
 - **Wraparound Map:** Seamlessly follow the ISS as it wraps around the world for a continuous viewing experience.
 
