@@ -200,6 +200,8 @@
         return "Unknown"; // Default if no category matches
       }
 
+      var isFirstRun = true;
+
       function updateISSPosition() {
         $.get("/iss_location", function (data) {
           var lat = data.latitude;
@@ -221,6 +223,12 @@
 
             // Update the marker's position to the new location
             issMarker.setLatLng([lat, lon]);
+          }
+
+          // If it's the first run and on a mobile device, center the map.
+          if (isFirstRun && window.innerWidth <= 768) {
+            map.setView([lat, lon]);
+            isFirstRun = false; // Set the flag to false so it doesn't re-center next time
           }
 
           issPositions.push({ lat: lat, lon: lon });
